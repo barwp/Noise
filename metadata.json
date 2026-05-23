@@ -1,0 +1,6 @@
+{
+  "name": "NoiseCustom Studio SCM",
+  "description": "Sistem Manajemen Rantai Pasok (SCM) untuk NoiseCustom Studio, menangani order, prioritas produksi, stok kaos & DTF, log, verifikasi pembayaran, QC, dan laporan owner.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
