@@ -792,22 +792,24 @@ export default function App() {
   }
 
   return (
-    <div id="scm-layout-root" className="flex h-screen bg-slate-50 text-slate-900 overflow-hidden font-sans">
+    <div id="scm-layout-root" className="flex h-screen bg-[#F5F7FA] text-slate-800 overflow-hidden font-sans">
       
-      {/* SIDEBAR COMPONENT - Professional Polish Slate style */}
-      <aside className="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0 border-r border-slate-800 z-10 shadow-2xl">
-        <div className="p-6 border-b border-slate-800 flex items-center gap-3 bg-slate-950">
-          <div className="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center font-black text-white text-xl shadow-md shadow-blue-500/30">N</div>
+      {/* SIDEBAR COMPONENT - Premium SaaS Minimalist Light Style */}
+      <aside className="w-64 bg-white text-slate-600 flex flex-col shrink-0 border-r border-slate-200/80 z-10 shadow-xs">
+        <div className="p-6 border-b border-slate-100 flex items-center gap-3 bg-white">
+          <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center font-black text-white text-lg shadow-md shadow-blue-500/10">N</div>
           <div>
-            <span className="font-extrabold text-white text-base tracking-tight block">NoiseCustom</span>
-            <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-widest block -mt-1">Studio SCM</span>
+            <span className="font-extrabold text-slate-900 text-base tracking-tight block">NoiseCustom</span>
+            <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-widest block -mt-1">Studio SCM</span>
           </div>
         </div>
 
-        {/* ROLE SIMULASI SWITCHER - Crucial for testing and access controls (Logic 12) */}
-        <div className="p-4 bg-slate-950 border-b border-slate-800/80">
-          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">OVERRIDE HAK AKSES AKUN:</div>
-          <div className="grid grid-cols-3 gap-1 bg-slate-900 p-1 rounded-md border border-slate-800">
+        {/* ROLE SIMULASI SWITCHER - Sleek SaaS Pill Indicator */}
+        <div className="p-4 bg-slate-50/75 border-b border-slate-200/50">
+          <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+            <Zap className="w-3 h-3 text-amber-500" /> OVERRIDE HAK AKSES DETIL:
+          </div>
+          <div className="grid grid-cols-3 gap-1 bg-white p-1 rounded-xl border border-slate-200/80 shadow-2xs">
             {([ 'admin', 'produksi', 'owner' ] as UserRole[]).map(role => (
               <button
                 key={role}
@@ -828,114 +830,128 @@ export default function App() {
                     setActiveTab('dashboard');
                   }
                 }}
-                className={`py-1.5 px-1 rounded text-[10px] font-bold uppercase transition-all ${
+                className={`py-1.5 px-0.5 rounded-lg text-[9.5px] font-bold uppercase transition-all cursor-pointer ${
                   activeRole === role
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    ? 'bg-blue-600 text-white shadow-xs font-black'
+                    : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
                 {role === 'produksi' ? 'PROD' : role.toUpperCase()}
               </button>
             ))}
           </div>
-          <div className="mt-2 flex items-center justify-between px-1 text-[11px] text-slate-400">
+          <div className="mt-2.5 flex items-center justify-between px-1 text-[11px] text-slate-500">
             <span className="flex items-center gap-1.5 shrink-0">
-              <UserCheck className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-              <span>Jabatan: <b className="text-white capitalize">{activeRole}</b></span>
+              <UserCheck className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+              <span>Jabatan: <b className="text-slate-800 capitalize font-bold">{activeRole}</b></span>
             </span>
           </div>
         </div>
 
         {/* Dynamic Sidebar Menus matches Role and User Context */}
         <nav className="flex-1 p-4 space-y-1.5 overflow-y-auto">
-          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-2.5 mb-1.5">MODUL OPERASIONAL</div>
+          <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-2.5 mb-2.5">MODUL OPERASIONAL</div>
           
           {(activeRole === 'admin' || activeRole === 'owner') && (
             <button
               onClick={() => setActiveTab('dashboard')}
-              className={`w-full flex items-center gap-3 px-3 py-2 rounded-md font-medium text-xs transition-colors ${
-                activeTab === 'dashboard' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold tracking-tight transition-all cursor-pointer ${
+                activeTab === 'dashboard' 
+                  ? 'bg-blue-50 text-blue-600 border border-blue-100/30 shadow-2xs font-bold' 
+                  : 'text-slate-600 hover:text-slate-950 hover:bg-slate-50'
               }`}
             >
-              <Activity className="w-4 h-4 shrink-0" /> Ringkasan SCM
+              <Activity className={`w-4 h-4 shrink-0 transition-transform duration-300 ${activeTab === 'dashboard' ? 'text-blue-600 scale-110' : 'text-slate-400'}`} /> Ringkasan SCM
             </button>
           )}
 
           <button
             onClick={() => setActiveTab('orders')}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-md font-medium text-xs transition-colors ${
-              activeTab === 'orders' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold tracking-tight transition-all cursor-pointer ${
+              activeTab === 'orders' 
+                ? 'bg-blue-50 text-blue-600 border border-blue-100/30 shadow-2xs font-bold' 
+                : 'text-slate-600 hover:text-slate-950 hover:bg-slate-50'
             }`}
           >
-            <Layers className="w-4 h-4 shrink-0" /> Prioritas & List Order
+            <Layers className={`w-4 h-4 shrink-0 transition-transform duration-300 ${activeTab === 'orders' ? 'text-blue-600 scale-110' : 'text-slate-400'}`} /> Prioritas & List Order
           </button>
 
           {(activeRole === 'admin' || activeRole === 'owner') && (
             <button
               onClick={() => setActiveTab('payments')}
-              className={`w-full flex items-center gap-3 px-3 py-2 rounded-md font-medium text-xs transition-colors ${
-                activeTab === 'payments' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold tracking-tight transition-all cursor-pointer ${
+                activeTab === 'payments' 
+                  ? 'bg-blue-50 text-blue-600 border border-blue-100/30 shadow-2xs font-bold' 
+                  : 'text-slate-600 hover:text-slate-950 hover:bg-slate-50'
               }`}
             >
-              <DollarSign className="w-4 h-4 shrink-0" /> Verifikasi Pembayaran
+              <DollarSign className={`w-4 h-4 shrink-0 transition-transform duration-300 ${activeTab === 'payments' ? 'text-blue-600 scale-110' : 'text-slate-400'}`} /> Verifikasi Pembayaran
             </button>
           )}
 
           <button
             onClick={() => setActiveTab('production')}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-md font-medium text-xs transition-colors ${
-              activeTab === 'production' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold tracking-tight transition-all cursor-pointer ${
+              activeTab === 'production' 
+                ? 'bg-blue-50 text-blue-600 border border-blue-100/30 shadow-2xs font-bold' 
+                : 'text-slate-600 hover:text-slate-950 hover:bg-slate-50'
             }`}
           >
-            <Sliders className="w-4 h-4 shrink-0" /> Kontrol Produksi & QC
+            <Sliders className={`w-4 h-4 shrink-0 transition-transform duration-300 ${activeTab === 'production' ? 'text-blue-600 scale-110' : 'text-slate-400'}`} /> Kontrol Produksi & QC
           </button>
 
           <button
             onClick={() => setActiveTab('inventory')}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-md font-medium text-xs transition-colors ${
-              activeTab === 'inventory' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold tracking-tight transition-all cursor-pointer ${
+              activeTab === 'inventory' 
+                ? 'bg-blue-50 text-blue-600 border border-blue-100/30 shadow-2xs font-bold' 
+                : 'text-slate-600 hover:text-slate-950 hover:bg-slate-50'
             }`}
           >
-            <Package className="w-4 h-4 shrink-0" /> Stok Kaos & DTF
+            <Package className={`w-4 h-4 shrink-0 transition-transform duration-300 ${activeTab === 'inventory' ? 'text-blue-600 scale-110' : 'text-slate-400'}`} /> Stok Kaos & DTF
           </button>
 
           {(activeRole === 'owner' || activeRole === 'admin') && (
             <button
               onClick={() => setActiveTab('reports')}
-              className={`w-full flex items-center gap-3 px-3 py-2 rounded-md font-medium text-xs transition-colors ${
-                activeTab === 'reports' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold tracking-tight transition-all cursor-pointer ${
+                activeTab === 'reports' 
+                  ? 'bg-blue-50 text-blue-600 border border-blue-100/30 shadow-2xs font-bold' 
+                  : 'text-slate-600 hover:text-slate-950 hover:bg-slate-50'
               }`}
             >
-              <TrendingUp className="w-4 h-4 shrink-0" /> Laporan Owner
+              <TrendingUp className={`w-4 h-4 shrink-0 transition-transform duration-300 ${activeTab === 'reports' ? 'text-blue-600 scale-110' : 'text-slate-400'}`} /> Laporan Owner
             </button>
           )}
 
           <button
             onClick={() => setActiveTab('customers')}
-            className={`w-full flex items-center gap-3 px-3 py-2 rounded-md font-medium text-xs transition-colors ${
-              activeTab === 'customers' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold tracking-tight transition-all cursor-pointer ${
+              activeTab === 'customers' 
+                ? 'bg-blue-50 text-blue-600 border border-blue-100/30 shadow-2xs font-bold' 
+                : 'text-slate-600 hover:text-slate-950 hover:bg-slate-50'
             }`}
           >
-            <Users className="w-4 h-4 shrink-0" /> Data Customers
+            <Users className={`w-4 h-4 shrink-0 transition-transform duration-300 ${activeTab === 'customers' ? 'text-blue-600 scale-110' : 'text-slate-400'}`} /> Data Customers
           </button>
         </nav>
 
           {/* Logged in summary info box with logouts */}
-          <div className="p-4 bg-slate-850 m-4 rounded-xl border border-slate-800/65 shadow-lg space-y-2.5">
+          <div className="p-4 bg-slate-50/85 m-4 rounded-xl border border-slate-200/60 shadow-2xs space-y-2.5">
             <div className="flex items-center gap-2">
-              <div className="w-7.5 h-7.5 rounded-md bg-blue-500/10 border border-blue-500/20 flex items-center justify-center font-bold text-blue-400 text-xs uppercase shrink-0">
+              <div className="w-7.5 h-7.5 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center font-bold text-blue-600 text-[11px] uppercase shrink-0">
                 {activeRole.substring(0,2)}
               </div>
               <div className="min-w-0 flex-1">
-                <div className="text-xs font-semibold text-white truncate" title={currentUser?.name || 'Staf NoiseCustom'}>
+                <div className="text-xs font-bold text-slate-800 truncate" title={currentUser?.name || 'Staf NoiseCustom'}>
                   {currentUser?.name || 'Staf NoiseCustom'}
                 </div>
-                <div className="text-[9px] uppercase font-bold tracking-widest text-slate-400">{activeRole} System</div>
+                <div className="text-[9px] uppercase font-extrabold tracking-wider text-slate-400">{activeRole} System</div>
               </div>
             </div>
             <button
               onClick={handleLogout}
-              className="w-full text-center py-1.5 rounded bg-slate-900 border border-slate-800 hover:bg-rose-950/40 hover:border-rose-900/60 text-red-400 hover:text-rose-200 text-[10px] font-bold uppercase tracking-wider transition-all"
+              className="w-full text-center py-1.5 rounded-lg bg-white border border-slate-200 hover:bg-rose-50 hover:border-rose-200 text-rose-600 hover:text-rose-700 text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer"
             >
               Keluar / Sign Out
             </button>
@@ -1013,30 +1029,50 @@ export default function App() {
             <div className="space-y-6">
               
               {/* Top Summary Blocks */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-sm border-l-4 border-l-blue-600">
-                  <div className="text-[10px] text-slate-500 uppercase font-black tracking-wider mb-1">TOTAL OMZET TEREALISASI</div>
-                  <div className="text-xl font-bold text-slate-900">Rp {reports.totalOmzet?.toLocaleString() || '0'}</div>
-                  <div className="text-[9px] text-slate-400 mt-2">Berdasarkan Pembayaran Berhasil / Valid</div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs transition-all hover:shadow-md hover:translate-y-[-1px]">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[10px] text-slate-400 uppercase font-extrabold tracking-wider">TOTAL OMZET TEREALISASI</span>
+                    <div className="w-8 h-8 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+                      <DollarSign className="w-4 h-4" />
+                    </div>
+                  </div>
+                  <div className="text-2xl font-black text-slate-900 tracking-tight">Rp {reports.totalOmzet?.toLocaleString() || '0'}</div>
+                  <div className="text-[10px] text-slate-450 mt-1 pb-0.5 font-medium">Omset berstatus terverifikasi lunas</div>
                 </div>
 
-                <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-sm border-l-4 border-l-cyan-500">
-                  <div className="text-[10px] text-slate-500 uppercase font-black tracking-wider mb-1">TOTAL ORDER MASUK</div>
-                  <div className="text-xl font-bold text-slate-900">{reports.totalOrders || '0'} <span className="text-xs font-medium text-slate-400">Kerja</span></div>
-                  <div className="text-[9px] text-slate-400 mt-2">Total pesanan terekam di sistem</div>
+                <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs transition-all hover:shadow-md hover:translate-y-[-1px]">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[10px] text-slate-400 uppercase font-extrabold tracking-wider">TOTAL ORDER MASUK</span>
+                    <div className="w-8 h-8 rounded-xl bg-sky-50 flex items-center justify-center text-sky-600">
+                      <Layers className="w-4 h-4" />
+                    </div>
+                  </div>
+                  <div className="text-2xl font-black text-slate-900 tracking-tight">{reports.totalOrders || '0'} <span className="text-xs font-semibold text-slate-400">Order</span></div>
+                  <div className="text-[10px] text-slate-450 mt-1 pb-0.5 font-medium">Total pesanan dalam sistem SCM</div>
                 </div>
 
-                <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-sm border-l-4 border-l-amber-500">
-                  <div className="text-[10px] text-slate-500 uppercase font-black tracking-wider mb-1">BOTTLENECK UTAMA</div>
-                  <div className="text-base font-bold text-amber-700 truncate">{reports.highestBottleneck || 'N/A'}</div>
-                  <div className="text-[9px] text-slate-400 mt-2">Kandungan order menumpuk ({reports.highestBottleneckCount || 0} order)</div>
+                <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs transition-all hover:shadow-md hover:translate-y-[-1px]">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[10px] text-slate-400 uppercase font-extrabold tracking-wider">BOTTLENECK UTAMA</span>
+                    <div className="w-8 h-8 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600">
+                      <AlertTriangle className="w-4 h-4" />
+                    </div>
+                  </div>
+                  <div className="text-lg font-black text-amber-600 truncate pt-1">{reports.highestBottleneck?.replace(/_/g, ' ').toUpperCase() || 'NORMAL'}</div>
+                  <div className="text-[10px] text-slate-450 mt-1 pb-0.5 font-medium">Antrean terpadat ({reports.highestBottleneckCount || 0} order)</div>
                 </div>
 
-                <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-sm border-l-4 border-l-green-600">
-                  <div className="text-[10px] text-slate-500 uppercase font-black tracking-wider mb-1">TOTAL STOK KAOS</div>
-                  <div className="text-xl font-bold text-slate-900">{reports.totalStockKaosRemaining || '0'} <span className="text-xs font-normal text-slate-400">Pcs</span></div>
-                  <div className="text-[9px] text-slate-400 mt-1 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span> Tersedia di gudang NoiseCustom
+                <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs transition-all hover:shadow-md hover:translate-y-[-1px]">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[10px] text-slate-400 uppercase font-extrabold tracking-wider">TOTAL STOK KAOS</span>
+                    <div className="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+                      <Package className="w-4 h-4" />
+                    </div>
+                  </div>
+                  <div className="text-2xl font-black text-slate-900 tracking-tight">{reports.totalStockKaosRemaining || '0'} <span className="text-xs font-semibold text-slate-400">Pcs</span></div>
+                  <div className="text-[10px] text-slate-450 mt-1 pb-0.5 font-medium flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span> Stok aman di gudang
                   </div>
                 </div>
               </div>
@@ -1045,35 +1081,35 @@ export default function App() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
                 {/* 8-Cols Order Priority Queue (Logic 5: ORDER BY order_date ASC) */}
-                <div className="lg:col-span-8 flex flex-col bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
-                  <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+                <div className="lg:col-span-8 flex flex-col bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-xs">
+                  <div className="p-5 border-b border-slate-100 bg-white flex justify-between items-center">
                     <div>
                       <h2 className="text-xs font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
-                        <Layers className="w-4 h-4 text-blue-600" /> DAFTAR ANTRIAN PRIORITAS PRODUKSI (TERLAMA KE TERBARU)
+                        <Layers className="w-4 h-4 text-blue-600" /> TIMELINE ANTRIAN PRIORITAS (FIFO SYSTEM)
                       </h2>
-                      <p className="text-[10px] text-slate-400">Urutan ketat <code>ORDER BY order_date ASC</code> untuk mencegah keterlambatan deliver.</p>
+                      <p className="text-[10px] text-slate-400 mt-1">Urutan ketat <code>ORDER BY order_date ASC</code> untuk mencegah delay pengiriman.</p>
                     </div>
-                    <span className="bg-blue-50 border border-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded text-[10px] uppercase">
-                      Bagian: Antrian Aktif ({priorityQueue.length})
+                    <span className="bg-blue-50 border border-blue-100/60 text-blue-700 font-bold px-3 py-1 rounded-lg text-[9.5px] uppercase tracking-wider">
+                      Antrian SCM ({priorityQueue.length})
                     </span>
                   </div>
 
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse text-xs">
-                      <thead className="bg-slate-50/80 text-slate-500 font-bold uppercase border-b border-slate-100">
+                      <thead className="bg-[#F8FAFC]/75 text-slate-400 font-semibold uppercase border-b border-slate-150">
                         <tr>
-                          <th className="px-4 py-2.5">Tgl Order</th>
-                          <th className="px-4 py-2.5">ID Order</th>
-                          <th className="px-4 py-2.5">Nama Customer</th>
-                          <th className="px-4 py-2.5">Status Produksi</th>
-                          <th className="px-4 py-2.5">Payment</th>
-                          <th className="px-4 py-2.5 text-right">Aksi</th>
+                          <th className="px-5 py-3 text-[10px] tracking-wider font-extrabold">Tanggal SCM</th>
+                          <th className="px-5 py-3 text-[10px] tracking-wider font-extrabold">ID Order</th>
+                          <th className="px-5 py-3 text-[10px] tracking-wider font-extrabold">Pelanggan</th>
+                          <th className="px-5 py-3 text-[10px] tracking-wider font-extrabold">Fase / Tahapan</th>
+                          <th className="px-5 py-3 text-[10px] tracking-wider font-extrabold">Status Bayar</th>
+                          <th className="px-5 py-3 text-[10px] tracking-wider font-extrabold text-right">Aksi</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
                         {priorityQueue.length === 0 ? (
                           <tr>
-                            <td colSpan={6} className="px-4 py-8 text-center text-slate-400 font-medium">
+                            <td colSpan={6} className="px-5 py-10 text-center text-slate-400 font-medium">
                               Tidak ada antrian order yang aktif saat ini.
                             </td>
                           </tr>
@@ -1081,38 +1117,38 @@ export default function App() {
                           priorityQueue.map((order, idx) => {
                             const isOldest = idx === 0;
                             return (
-                              <tr key={order.id} className={`hover:bg-slate-50/50 ${isOldest ? 'bg-amber-50/30' : ''}`}>
-                                <td className="px-4 py-3 text-slate-500 whitespace-nowrap">
+                              <tr key={order.id} className={`hover:bg-slate-50/50 transition-colors ${isOldest ? 'bg-amber-50/20' : ''}`}>
+                                <td className="px-5 py-3.5 text-slate-500 whitespace-nowrap">
                                   {new Date(order.order_date).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
-                                  {isOldest && <span className="ml-1.5 px-1.5 py-0.5 bg-red-100 text-red-700 font-bold rounded text-[8px] uppercase tracking-wider animate-bounce">Tertelat</span>}
+                                  {isOldest && <span className="ml-1.5 px-2 py-0.5 bg-rose-50 border border-rose-100 text-rose-650 font-black rounded-md text-[8px] uppercase tracking-wider">Prioritas</span>}
                                 </td>
-                                <td className="px-4 py-3 font-mono font-bold text-blue-600">{order.id}</td>
-                                <td className="px-4 py-3 font-semibold text-slate-800">{order.customer_name}</td>
-                                <td className="px-4 py-3">
-                                  <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase ${
-                                    order.production_status === 'menunggu_verifikasi_pembayaran' ? 'bg-slate-100 text-slate-600' :
-                                    order.production_status === 'antri_produksi' ? 'bg-amber-100 text-amber-700 border border-amber-200' :
-                                    order.production_status === 'cetak_dtf' ? 'bg-blue-100 text-blue-700' :
-                                    order.production_status === 'press_sablon' ? 'bg-purple-100 text-purple-700' :
-                                    order.production_status === 'quality_control' ? 'bg-teal-100 text-teal-700' :
-                                    order.production_status === 'revisi_komplain' ? 'bg-red-100 text-red-700 ring-1 ring-red-300' :
-                                    'bg-blue-100 text-blue-700'
+                                <td className="px-5 py-3.5 font-mono font-bold text-blue-600">{order.id}</td>
+                                <td className="px-5 py-3.5 font-bold text-slate-800">{order.customer_name}</td>
+                                <td className="px-5 py-3.5">
+                                  <span className={`px-2.5 py-1 rounded-full text-[9px] font-bold uppercase whitespace-nowrap ${
+                                    order.production_status === 'menunggu_verifikasi_pembayaran' ? 'bg-slate-50 text-slate-500 border border-slate-200' :
+                                    order.production_status === 'antri_produksi' ? 'bg-amber-50 text-amber-600 border border-amber-200/55' :
+                                    order.production_status === 'cetak_dtf' ? 'bg-sky-50 text-sky-600 border border-sky-100' :
+                                    order.production_status === 'press_sablon' ? 'bg-purple-50 text-purple-600 border border-purple-100' :
+                                    order.production_status === 'quality_control' ? 'bg-teal-50 text-teal-650 border border-teal-100' :
+                                    order.production_status === 'revisi_komplain' ? 'bg-rose-50 text-rose-650 border border-rose-200' :
+                                    'bg-blue-50 text-blue-600'
                                   }`}>
                                     {order.production_status.replace(/_/g, ' ')}
                                   </span>
                                 </td>
-                                <td className="px-4 py-3">
-                                  <span className={`font-semibold ${
-                                    order.invoice?.status_pembayaran === 'lunas' ? 'text-green-600' :
-                                    order.invoice?.status_pembayaran === 'dp' ? 'text-blue-600' : 'text-slate-400 italic'
+                                <td className="px-5 py-3.5">
+                                  <span className={`px-2 py-0.5 rounded-lg text-[9px] font-black tracking-wider whitespace-nowrap ${
+                                    order.invoice?.status_pembayaran === 'lunas' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' :
+                                    order.invoice?.status_pembayaran === 'dp' ? 'bg-blue-50 text-blue-600 border border-blue-100' : 'bg-rose-50 text-rose-600 border border-rose-100'
                                   }`}>
                                     {order.invoice ? order.invoice.status_pembayaran.toUpperCase() : 'BELUM BAYAR'}
                                   </span>
                                 </td>
-                                <td className="px-4 py-3 text-right">
+                                <td className="px-5 py-3.5 text-right whitespace-nowrap">
                                   <button
                                     onClick={() => setSelectedOrderDetails(order)}
-                                    className="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 font-bold rounded border border-slate-200 shadow-xs transition-all cursor-pointer"
+                                    className="px-3 py-1 bg-white hover:bg-slate-50 text-slate-700 font-bold rounded-lg border border-slate-200 shadow-3xs transition-all cursor-pointer text-[11px]"
                                   >
                                     Atur
                                   </button>
@@ -1125,9 +1161,9 @@ export default function App() {
                     </table>
                   </div>
 
-                  <div className="mt-auto p-3.5 bg-slate-50/50 border-t border-slate-100 flex justify-between items-center text-[11px] text-slate-500">
-                    <span>Prioritas teratas harus diproses cetak sablon terlebih dahulu (Sistem FIFO).</span>
-                    <button onClick={() => setActiveTab('orders')} className="text-blue-600 font-bold hover:underline cursor-pointer">Kelola Penuh &rarr;</button>
+                  <div className="mt-auto p-4 bg-slate-50/55 border-t border-slate-100 flex justify-between items-center text-[11px] text-slate-500 rounded-b-2xl">
+                    <span className="font-medium">Prioritas teratas wajib diproses sesuai anjuran FIFO.</span>
+                    <button onClick={() => setActiveTab('orders')} className="text-blue-600 font-bold hover:underline cursor-pointer">Selengkapnya &rarr;</button>
                   </div>
                 </div>
 
@@ -1135,20 +1171,20 @@ export default function App() {
                 <div className="lg:col-span-4 space-y-6">
                   
                   {/* Stock Level Quick Summary (Logic 9 & 10) */}
-                  <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                    <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3.5 flex items-center gap-2">
-                      <Package className="w-4 h-4 text-blue-600" /> STATUS STOK CRITICAL
+                  <div className="bg-white border border-slate-100 rounded-2xl p-5 shadow-xs">
+                    <h3 className="text-xs font-black text-slate-600 uppercase tracking-widest mb-4 flex items-center gap-2">
+                      <Package className="w-4 h-4 text-blue-600" /> STATUS BAHAN & STOK CRITICAL
                     </h3>
 
                     <div className="grid grid-cols-2 gap-3 mb-4">
                       {stockDtf.map(dtf => (
-                        <div key={dtf.id} className="bg-slate-50 border border-slate-200/80 p-3 rounded-lg">
+                        <div key={dtf.id} className="bg-slate-50 border border-slate-200/50 p-3 rounded-xl shadow-3xs">
                           <div className="text-[10px] text-slate-400 uppercase font-bold truncate">{dtf.roll_name}</div>
-                          <div className="text-lg font-black mt-1 text-slate-800">
-                            {dtf.stock_meter} <span className="text-xs font-normal text-slate-500">M</span>
+                          <div className="text-xl font-black mt-1 text-slate-800">
+                            {dtf.stock_meter} <span className="text-xs font-normal text-slate-400">M</span>
                           </div>
-                          <span className={`text-[8px] font-bold uppercase block mt-1 ${dtf.stock_meter <= dtf.min_stock ? 'text-red-600' : 'text-green-600'}`}>
-                            {dtf.stock_meter <= dtf.min_stock ? '⚠️ Butuh Restock' : '✓ Stok Ok'}
+                          <span className={`text-[8.5px] font-extrabold uppercase block mt-1 ${dtf.stock_meter <= dtf.min_stock ? 'text-red-500' : 'text-emerald-600'}`}>
+                            {dtf.stock_meter <= dtf.min_stock ? '⚠️ Re-Stock' : '✓ Kapasitas Aman'}
                           </span>
                         </div>
                       ))}
@@ -1156,19 +1192,19 @@ export default function App() {
 
                     {/* Low stock indicators itemized table (Logic 13) */}
                     <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
-                      <div className="text-[10px] font-bold text-slate-400 uppercase">Warning Stok Kaos Minimum:</div>
+                      <div className="text-[10px] font-bold text-slate-400 uppercase">Warning Stok Kaos Gudang:</div>
                       {stockKaosAlerts.length === 0 ? (
-                        <p className="text-[11px] text-slate-500 italic bg-emerald-50 text-emerald-800 p-2 rounded">
-                          ✓ Semua varian kaos memiliki cadangan stok di atas ambang batas operasional.
+                        <p className="text-[11px] text-slate-500 italic bg-emerald-50/70 border border-emerald-100 text-emerald-800 p-2 rounded-xl">
+                          ✓ Semua varian kaos memiliki cadangan memadai di atas limit aman.
                         </p>
                       ) : (
                         stockKaosAlerts.map(kaos => (
-                          <div key={kaos.id} className="flex items-center justify-between text-[11px] bg-red-50 border border-red-100 p-2 rounded-lg">
+                          <div key={kaos.id} className="flex items-center justify-between text-[11px] bg-red-50/60 border border-red-100/60 p-2.5 rounded-xl">
                             <div>
-                              <b className="text-slate-800 block">{kaos.jenis_kaos}</b>
-                              <span className="text-slate-500 text-[10px]">{kaos.warna} &bull; Size {kaos.size}</span>
+                              <b className="text-slate-800 font-bold block">{kaos.jenis_kaos}</b>
+                              <span className="text-slate-400 text-[10px]">{kaos.warna} &bull; Size {kaos.size}</span>
                             </div>
-                            <span className="bg-red-100 text-red-700 font-extrabold px-2 py-0.5 rounded text-[11px]">
+                            <span className="bg-red-100/70 text-red-750 font-bold px-2 py-0.5 rounded-lg text-[10.5px]">
                               {kaos.stock_qty} Pcs
                             </span>
                           </div>
@@ -1182,49 +1218,50 @@ export default function App() {
                            setActiveTab('inventory');
                            setShowDeductDtfModal(true);
                          }}
-                         className="flex-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-center py-1.5 rounded text-[10px] font-bold uppercase"
+                         className="flex-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-center py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all cursor-pointer"
                        >
-                         Potong DTF Manual
+                         Potong DTF
                        </button>
                        <button
                          onClick={() => {
                            setActiveTab('inventory');
                            setShowAdjustStockModal(true);
                          }}
-                         className="flex-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-center py-1.5 rounded text-[10px] font-bold uppercase"
+                         className="flex-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-center py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all cursor-pointer"
                        >
-                         Restock Audit
+                         Restock Kaos
                        </button>
                     </div>
                   </div>
-                                    {/* Operational Alerts / Activity (Logs & Notifications) */}
-                  <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+
+                  {/* Operational Alerts / Activity (Logs & Notifications) */}
+                  <div className="bg-white border border-slate-100 rounded-2xl p-5 shadow-xs">
                     <div className="flex justify-between items-center mb-3">
-                      <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
-                        <Bell className="w-4 h-4 text-rose-500 animate-swing" /> LOG NOTIFIKASI SCM
+                      <h3 className="text-xs font-black text-slate-600 uppercase tracking-widest flex items-center gap-2">
+                        <Bell className="w-4 h-4 text-emerald-600" /> NOTIFIKASI AKTIVITAS
                       </h3>
                       {notifications.some(n => !n.is_read) && (
-                        <button onClick={handleMarkAllRead} className="text-[10px] text-blue-600 font-extrabold hover:underline cursor-pointer">
-                          Clear
+                        <button onClick={handleMarkAllRead} className="text-[9px] text-blue-600 font-extrabold hover:underline cursor-pointer bg-blue-50 px-2.5 py-1 rounded-md">
+                          Clear All
                         </button>
                       )}
                     </div>
 
                     <div className="space-y-2.5 max-h-60 overflow-y-auto pr-1">
                       {notifications.length === 0 ? (
-                        <p className="text-[11px] text-slate-400 italic text-center py-6">Tidak ada log notifikasi terbaru.</p>
+                        <p className="text-[11px] text-slate-450 italic text-center py-6">Tidak ada log notifikasi terbaru.</p>
                       ) : (
                         notifications.slice(0, 5).map(notif => (
-                          <div key={notif.id} className={`p-2 rounded text-[11px] border ${
-                            notif.is_read ? 'bg-slate-50 border-slate-100 text-slate-500' : 'bg-rose-50/50 border-rose-100 text-slate-800 font-medium'
+                          <div key={notif.id} className={`p-3 rounded-xl text-[11px] border leading-normal transition-all ${
+                            notif.is_read ? 'bg-slate-50 border-slate-100 text-slate-500' : 'bg-blue-50/40 border-blue-100/70 text-slate-800'
                           }`}>
-                            <div className="flex justify-between items-start">
-                              <span className="text-[9px] text-slate-400 block mb-0.5">
+                            <div className="flex justify-between items-start mb-1">
+                              <span className="text-[9px] text-slate-400 font-bold block">
                                 {new Date(notif.created_at).toLocaleDateString()}
                               </span>
-                              {!notif.is_read && <span className="w-1.5 h-1.5 rounded-full bg-rose-600"></span>}
+                              {!notif.is_read && <span className="w-1.5 h-1.5 rounded-full bg-blue-600 inline-block animate-pulse"></span>}
                             </div>
-                            <p className="leading-tight">{notif.message}</p>
+                            <p className="leading-tight text-slate-700 font-medium">{notif.message}</p>
                           </div>
                         ))
                       )}
@@ -1241,15 +1278,15 @@ export default function App() {
           {/* TAB 2: MANAGEMENT ORDER & PRIORITY QUEUE (Logic 1, 2, 5, 14, 15) */}
           {activeTab === 'orders' && (
             <div className="space-y-6">
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-5 rounded-2xl border border-slate-100 shadow-xs">
                 <div>
-                  <h2 className="text-sm font-black text-slate-800 uppercase tracking-wider">REDAKSI DAN PRIORITAS UTAMA ANTRIAN ORDER</h2>
+                  <h2 className="text-sm font-black text-slate-800 uppercase tracking-widest">REDAKSI DAN PRIORITAS UTAMA ANTRIAN ORDER</h2>
                   <p className="text-xs text-slate-500">Daftar order aktif diurutkan dari terlama sampai terbaru (ORDER BY order_date ASC).</p>
                 </div>
                 <div className="flex gap-2">
                   <button
                     onClick={() => setShowAddOrderModal(true)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg text-xs cursor-pointer"
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl text-xs cursor-pointer transition-all"
                   >
                     + Buat Simulasi Order Pelanggan
                   </button>
@@ -1257,23 +1294,23 @@ export default function App() {
               </div>
 
               {/* Order List Table */}
-              <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
-                <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                  <span className="text-xs font-bold text-slate-600 text-slate-450 uppercase">DAFTAR KANBAN SCM (TOTAL: {orders.length} PESANAN)</span>
-                  <div className="text-[11px] text-slate-500 italic">Klik "Kelola Detail" untuk memproses verifikasi, cetak, sablon, QC, dsb.</div>
+              <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-xs">
+                <div className="p-5 border-b border-slate-100 bg-[#F8FAFC]/55 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                  <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">DAFTAR KANBAN SCM (TOTAL: {orders.length} PESANAN)</span>
+                  <div className="text-[11px] text-slate-400 font-medium">Klik "Kelola" untuk memproses verifikasi, cetak, sablon, QC, dsb.</div>
                 </div>
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse text-xs">
-                    <thead className="bg-slate-50 text-slate-500 font-bold uppercase border-b border-slate-200">
+                    <thead className="bg-[#F8FAFC]/75 text-slate-400 font-semibold uppercase border-b border-slate-150">
                       <tr>
-                        <th className="px-4 py-3">Tanggal Reg</th>
-                        <th className="px-4 py-3">ID Order / Invoice</th>
-                        <th className="px-4 py-3">Customer & WA</th>
-                        <th className="px-4 py-3">Detail Desain (DP/Full)</th>
-                        <th className="px-4 py-3">Tagihan / Bayar</th>
-                        <th className="px-4 py-3">Status SCM</th>
-                        <th className="px-4 py-3 text-right">Aksi</th>
+                        <th className="px-5 py-3 text-[10px] tracking-wider font-extrabold">Tanggal Reg</th>
+                        <th className="px-5 py-3 text-[10px] tracking-wider font-extrabold">ID Order / Invoice</th>
+                        <th className="px-5 py-3 text-[10px] tracking-wider font-extrabold">Customer & WA</th>
+                        <th className="px-5 py-3 text-[10px] tracking-wider font-extrabold">Detail Desain (DP/Full)</th>
+                        <th className="px-5 py-3 text-[10px] tracking-wider font-extrabold">Tagihan / Bayar</th>
+                        <th className="px-5 py-3 text-[10px] tracking-wider font-extrabold">Status SCM</th>
+                        <th className="px-5 py-3 text-[10px] tracking-wider font-extrabold text-right">Aksi</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
@@ -1281,7 +1318,7 @@ export default function App() {
                         const isAwaitingPayment = order.production_status === 'menunggu_verifikasi_pembayaran';
                         return (
                           <tr key={order.id} className="hover:bg-slate-50/50 transition-colors">
-                            <td className="px-4 py-3 whitespace-nowrap text-slate-500 font-medium">
+                            <td className="px-5 py-3.5 whitespace-nowrap text-slate-500 font-medium">
                               {new Date(order.order_date).toLocaleDateString('id-ID', {
                                 day: '2-digit',
                                 month: 'short',
@@ -1289,47 +1326,47 @@ export default function App() {
                                 minute: '2-digit'
                               })}
                             </td>
-                            <td className="px-4 py-3 font-mono">
+                            <td className="px-5 py-3.5 font-mono">
                               <div className="font-bold text-slate-900">{order.id}</div>
-                              <div className="text-[10px] text-blue-600">{order.invoice_id}</div>
+                              <div className="text-[10px] text-blue-600 font-semibold">{order.invoice_id}</div>
                             </td>
-                            <td className="px-4 py-3">
+                            <td className="px-5 py-3.5">
                               <div className="font-bold text-slate-800">{order.customer_name}</div>
-                              <div className="text-slate-500 text-[10px]">{order.customer_phone}</div>
+                              <div className="text-slate-400 font-medium text-[10px]">{order.customer_phone}</div>
                             </td>
-                            <td className="px-4 py-3">
-                              <div className="text-slate-700 font-semibold max-w-xs truncate">{order.description}</div>
-                              <div className="text-[10px] text-slate-400 mt-0.5">Ukuran Print: {order.designs?.print_size || 'N/A'}</div>
+                            <td className="px-5 py-3.5">
+                              <div className="text-slate-700 font-bold max-w-xs truncate">{order.description}</div>
+                              <div className="text-[10px] text-slate-405 mt-0.5 font-semibold">Ukuran Print: {order.designs?.print_size || 'N/A'}</div>
                             </td>
-                            <td className="px-4 py-3">
+                            <td className="px-5 py-3.5">
                               <div className="font-bold text-slate-900">Rp {order.total_amount.toLocaleString()}</div>
                               <div className="mt-0.5">
-                                <span className={`px-1.5 py-0.5 rounded text-[8px] font-black uppercase ${
-                                  order.invoice?.status_pembayaran === 'lunas' ? 'bg-green-100 text-green-700' :
-                                  order.invoice?.status_pembayaran === 'dp' ? 'bg-blue-100 text-blue-700' :
-                                  order.invoice?.status_pembayaran === 'ditolak' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'
+                                <span className={`px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-wider ${
+                                  order.invoice?.status_pembayaran === 'lunas' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' :
+                                  order.invoice?.status_pembayaran === 'dp' ? 'bg-blue-50 text-blue-600 border border-blue-105' :
+                                  order.invoice?.status_pembayaran === 'ditolak' ? 'bg-rose-50 text-rose-600 border border-rose-100' : 'bg-amber-50 text-amber-600 border border-amber-100'
                                 }`}>
                                   {order.invoice?.status_pembayaran || 'Belum Lunas'}
                                 </span>
                               </div>
                             </td>
-                            <td className="px-4 py-3">
+                            <td className="px-5 py-3.5">
                               <div className="flex flex-col">
-                                <span className={`w-fit px-2 py-0.5 rounded text-[9px] font-bold uppercase ${
-                                  order.production_status === 'selesai' ? 'bg-green-100 text-green-700' :
-                                  order.production_status === 'revisi_komplain' ? 'bg-red-100 text-red-700 font-bold border border-red-200 animate-pulse' :
-                                  'bg-slate-100 text-slate-700'
+                                <span className={`w-fit px-2 py-0.5 rounded-full text-[9px] font-bold uppercase whitespace-nowrap ${
+                                  order.production_status === 'selesai' ? 'bg-emerald-50 text-emerald-600 border border-emerald-150' :
+                                  order.production_status === 'revisi_komplain' ? 'bg-rose-50 text-rose-600 border border-rose-200 animate-pulse' :
+                                  'bg-slate-50 text-slate-500 border border-slate-200'
                                 }`}>
                                   {order.production_status.replace(/_/g, ' ')}
                                 </span>
                                 {order.payment && (
-                                  <span className="text-[9px] text-slate-400 mt-1">
-                                    Verifikasi: <b>{order.payment.status_verifikasi.toUpperCase()}</b>
+                                  <span className="text-[9px] text-slate-400 mt-1 font-medium">
+                                    Verifikasi: <b className="text-slate-600 font-semibold">{order.payment.status_verifikasi.toUpperCase()}</b>
                                   </span>
                                 )}
                               </div>
                             </td>
-                            <td className="px-4 py-3 text-right">
+                            <td className="px-5 py-3.5 text-right whitespace-nowrap">
                               <div className="flex items-center justify-end gap-1.5">
                                 {/* Simulated action: customer upload pay proof if status awaits */}
                                 {isAwaitingPayment && (
@@ -1339,7 +1376,7 @@ export default function App() {
                                       setPayAmountPaid(order.total_amount);
                                       setShowUploadPaymentModal(true);
                                     }}
-                                    className="bg-amber-500 hover:bg-amber-600 text-white font-bold px-2 py-1 rounded text-[10px] cursor-pointer"
+                                    className="bg-amber-500 hover:bg-amber-600 text-white font-bold px-2 py-1 rounded-lg text-[10px] cursor-pointer transition-all shadow-3xs"
                                     title="Simulasi link customer upload struk transfer"
                                   >
                                     Struk Bayar
@@ -1351,15 +1388,15 @@ export default function App() {
                                   href={getWhatsAppLink(order)}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="p-1 px-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-bold rounded flex items-center gap-1 text-[10px]"
+                                  className="p-1 px-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-100 font-bold rounded-lg flex items-center gap-1 text-[10px] transition-all"
                                   title="Kirim status ke WhatsApp customer langsung"
                                 >
-                                  <PhoneCall className="w-3 h-3 text-emerald-600" /> WhatsApp
+                                  <PhoneCall className="w-3 h-3 text-emerald-600" /> WA
                                 </a>
 
                                 <button
                                   onClick={() => setSelectedOrderDetails(order)}
-                                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-2.5 py-1 rounded text-[10px] cursor-pointer"
+                                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-2.5 py-1 rounded-lg text-[10px] cursor-pointer transition-all shadow-3xs"
                                 >
                                   Kelola
                                 </button>
@@ -1378,9 +1415,9 @@ export default function App() {
           {/* TAB 3: MANAGEMENT VERIFIKASI PEMBAYARAN REQUISITE (Logic 1, 2, 3, 4) */}
           {activeTab === 'payments' && (
             <div className="space-y-6">
-              <div className="bg-white p-4 rounded-xl border border-slate-200">
-                <h2 className="text-sm font-black text-slate-800 uppercase tracking-wider">VERIFIKASI & VALIDASI PEMBAYARAN MASUK</h2>
-                <p className="text-xs text-slate-500 mt-1">
+              <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-xs">
+                <h2 className="text-sm font-black text-slate-800 uppercase tracking-widest">VERIFIKASI & VALIDASI PEMBAYARAN MASUK</h2>
+                <p className="text-xs text-slate-500 mt-2">
                   Harap verifikasi bukti bayar yang masuk dari pelanggan. Jika disetujui, order masuk antrean produksi utama, status invoice menjadi DP/Lunas dan <b>stok kaos otomatis dipotong secara seketika!</b>.
                 </p>
               </div>
@@ -1388,35 +1425,38 @@ export default function App() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
                 {/* Pending Verification Left Itemized List */}
-                <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-4">
-                  <h3 className="text-xs font-black text-amber-700 uppercase tracking-widest border-b border-slate-100 pb-2">
-                    MENUNGGU VERIFIKASI PEMBAYARAN
+                <div className="bg-white border border-slate-100 rounded-2xl p-5 shadow-xs space-y-4">
+                  <h3 className="text-xs font-black text-amber-600 uppercase tracking-widest border-b border-slate-100 pb-3 flex items-center justify-between">
+                    <span>MENUNGGU VERIFIKASI PEMBAYARAN</span>
+                    <span className="bg-amber-100/60 text-amber-700 font-bold text-[8.5px] px-2 py-0.5 rounded-full">
+                      {orders.filter(o => o.payment && o.payment.status_verifikasi === 'menunggu_verifikasi').length} TERTUNDA
+                    </span>
                   </h3>
 
-                  <div className="space-y-3 max-h-[500px] overflow-y-auto pr-1">
+                  <div className="space-y-3.5 max-h-[500px] overflow-y-auto pr-1">
                     {orders.filter(o => o.payment && o.payment.status_verifikasi === 'menunggu_verifikasi').length === 0 ? (
-                      <p className="text-xs text-slate-500 italic py-8 text-center bg-slate-50 rounded">
+                      <p className="text-xs text-slate-400 italic py-10 text-center bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
                         Semua pembayaran lunas/DP sudah di-verifikasi. Tidak ada antrian pembayaran tertunda!
                       </p>
                     ) : (
                       orders.filter(o => o.payment && o.payment.status_verifikasi === 'menunggu_verifikasi').map(order => (
-                        <div key={order.payment?.id} className="p-3 bg-amber-50/50 border border-amber-200/60 rounded-xl space-y-2">
+                        <div key={order.payment?.id} className="p-4 bg-amber-50/30 border border-amber-200/50 rounded-xl space-y-3">
                           <div className="flex justify-between items-center text-xs">
                             <span className="font-mono font-bold text-blue-600">{order.id}</span>
-                            <span className="text-slate-400 font-medium">{new Date(order.payment!.payment_date).toLocaleTimeString()}</span>
+                            <span className="text-slate-450 font-bold text-[10px]">{new Date(order.payment!.payment_date).toLocaleDateString('id-ID', { hour: '2-digit', minute: '2-digit' })}</span>
                           </div>
                           <div>
-                            <div className="font-bold text-slate-800 text-xs">{order.customer_name} &bull; {order.customer_phone}</div>
-                            <div className="text-slate-500 text-[10px] mt-0.5">{order.description}</div>
+                            <div className="font-bold text-slate-800 text-xs">{order.customer_name} &bull; <span className="text-slate-500">{order.customer_phone}</span></div>
+                            <div className="text-slate-500 text-[10px] mt-1 line-clamp-1">{order.description}</div>
                           </div>
-                          <div className="border-t border-amber-100 pt-2 flex justify-between items-center">
+                          <div className="border-t border-amber-100/60 pt-2.5 flex justify-between items-center">
                             <div>
-                              <span className="text-[10px] text-slate-400 block">Nominal Ditransfer:</span>
-                              <span className="font-bold text-slate-900 text-sm">Rp {order.payment?.amount_paid.toLocaleString()}</span>
+                              <span className="text-[10px] text-slate-450 font-bold uppercase tracking-wider block">Nominal Ditransfer:</span>
+                              <span className="font-black text-slate-900 text-sm">Rp {order.payment?.amount_paid.toLocaleString()}</span>
                             </div>
                             <button
                               onClick={() => setSelectedOrderDetails(order)}
-                              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-[10px] cursor-pointer"
+                              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-3 rounded-lg text-[10px] cursor-pointer transition-all shadow-3xs"
                             >
                               Tinjau Struk
                             </button>
@@ -1428,32 +1468,32 @@ export default function App() {
                 </div>
 
                 {/* History Verified Right Panel */}
-                <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-4">
-                  <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest border-b border-slate-100 pb-2">
+                <div className="bg-white border border-slate-100 rounded-2xl p-5 shadow-xs space-y-4">
+                  <h3 className="text-xs font-black text-slate-600 uppercase tracking-widest border-b border-slate-100 pb-3">
                     RIWAYAT VERIFIKASI PEMBAYARAN TERBARU
                   </h3>
 
                   <div className="space-y-3 max-h-[500px] overflow-y-auto pr-1">
                     {orders.filter(o => o.payment && o.payment.status_verifikasi !== 'menunggu_verifikasi').length === 0 ? (
-                      <p className="text-xs text-slate-400 italic py-6 text-center">Nol riwayat.</p>
+                      <p className="text-xs text-slate-450 italic py-10 text-center bg-slate-50/50 rounded-2xl">Nol riwayat verifikasi.</p>
                     ) : (
                       orders.filter(o => o.payment && o.payment.status_verifikasi !== 'menunggu_verifikasi').map(order => (
-                        <div key={order.payment?.id} className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                        <div key={order.payment?.id} className="p-3.5 bg-slate-50 border border-slate-200/60 rounded-xl space-y-2">
                           <div className="flex justify-between items-center text-xs">
-                            <span className="font-mono text-slate-500">{order.id}</span>
-                            <span className={`px-2 py-0.5 rounded text-[9px] font-black uppercase ${
-                              order.payment?.status_verifikasi === 'disetujui' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                            <span className="font-mono text-slate-500 font-bold">{order.id}</span>
+                            <span className={`px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-wider ${
+                              order.payment?.status_verifikasi === 'disetujui' ? 'bg-emerald-50 text-emerald-600 border border-emerald-200/50' : 'bg-rose-50 text-rose-650 border border-rose-200/50'
                             }`}>
                               {order.payment?.status_verifikasi}
                             </span>
                           </div>
-                          <div className="mt-2 text-xs">
-                            <span className="text-slate-400">Penyetor:</span> <b className="text-slate-700">{order.customer_name}</b>
-                            <div className="text-[11px] text-slate-700 mt-1 font-bold">Transfer Rp {order.payment?.amount_paid.toLocaleString()} &bull; Inv: {order.invoice?.status_pembayaran.toUpperCase()}</div>
+                          <div className="text-xs">
+                            <span className="text-slate-450 font-medium">Penyetor:</span> <b className="text-slate-800">{order.customer_name}</b>
+                            <div className="text-[11px] text-slate-800 mt-1.5 font-bold">Transfer Rp {order.payment?.amount_paid.toLocaleString()} &bull; Inv: <span className="text-blue-600">{order.invoice?.status_pembayaran.toUpperCase()}</span></div>
                           </div>
-                          <div className="mt-2 text-[10px] text-slate-400 border-t border-slate-100 pt-1">
-                            Disisir oleh: {order.payment?.verified_by} pada {new Date(order.payment?.verified_at || '').toLocaleDateString('id-ID')}
-                            {order.payment?.notes && <p className="italic text-slate-500 text-[11px] mt-1 bg-white p-1 rounded-sm">"{order.payment.notes}"</p>}
+                          <div className="mt-2 text-[10px] text-slate-400 border-t border-slate-100 pt-2 flex flex-col gap-1">
+                            <div>Disetujui oleh: <b className="text-slate-500">{order.payment?.verified_by}</b> pada {new Date(order.payment?.verified_at || '').toLocaleDateString('id-ID')}</div>
+                            {order.payment?.notes && <p className="italic text-slate-550 text-[10.5px] bg-white p-2 rounded border border-slate-200/50">"{order.payment.notes}"</p>}
                           </div>
                         </div>
                       ))
