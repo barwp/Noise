@@ -2115,327 +2115,389 @@ export default function App() {
 
       </main>
 
-      {/* --- SIDE DETAILS DRAWER MODAL (ACTIVE OPERATIONAL CONTROLS) --- */}
+      {/* --- CENTERED DETAIL MODAL HUB (ACTIVE OPERATIONAL CONTROLS) --- */}
       {selectedOrderDetails && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex justify-end">
-          <div className="w-full max-w-2xl bg-white h-full shadow-2xl overflow-y-auto flex flex-col p-6 space-y-6">
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 md:p-6 overflow-y-auto">
+          <div className="bg-white rounded-3xl w-full max-w-4xl max-h-[90vh] shadow-2xl overflow-y-auto flex flex-col border border-slate-100 animate-in fade-in zoom-in-95 duration-200">
             
-            {/* Header */}
-            <div className="flex justify-between items-center border-b border-slate-100 pb-4">
-              <div>
-                <span className="text-[10px] text-blue-600 font-bold font-mono">DETAIL OPERASIONAL SCM:</span>
-                <h3 className="text-base font-black text-slate-800 uppercase tracking-tight">{selectedOrderDetails.id}</h3>
+            {/* Sticky Header inside Center Modal */}
+            <div className="sticky top-0 bg-white/95 backdrop-blur-md z-10 px-6 py-4 md:px-8 border-b border-slate-100 flex justify-between items-center rounded-t-3xl shadow-3xs">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl">
+                  <Layers className="w-5 h-5 shrink-0" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-blue-600 font-extrabold font-mono uppercase tracking-widest bg-blue-50/50 px-2.5 py-0.5 rounded-md">DETAIL OPERASIONAL SCM</span>
+                    <span className="text-[10px] font-mono text-slate-400 font-bold">#{selectedOrderDetails.id}</span>
+                  </div>
+                  <h3 className="text-base md:text-lg font-black text-slate-800 uppercase tracking-tight mt-0.5">
+                    {selectedOrderDetails.customer_name} &mdash; <span className="text-slate-500 font-bold lowercase italic text-xs md:text-sm">{selectedOrderDetails.description}</span>
+                  </h3>
+                </div>
               </div>
               <button
                 onClick={() => setSelectedOrderDetails(null)}
-                className="p-1 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-md text-sm font-bold"
+                className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-xl transition-all font-bold cursor-pointer text-xs flex items-center gap-1 border border-slate-200"
               >
-                Tutup [X]
+                <span>Tutup [ESC]</span>
               </button>
             </div>
 
-            {/* Customer & Info Display */}
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-              <span className="text-[10px] text-slate-400 uppercase font-black block">INFORMASI PELANGGAN & OPERASI</span>
-              <div className="mt-2 grid grid-cols-2 gap-4 text-xs">
-                <div>
-                  <span className="text-slate-400 block mb-0.5">Nama Customer:</span>
-                  <b className="text-slate-800 text-sm block">{selectedOrderDetails.customer_name}</b>
-                  <span className="text-slate-500 font-medium">{selectedOrderDetails.customer_phone}</span>
-                </div>
-                <div>
-                  <span className="text-slate-400 block mb-0.5">Metode Bayar:</span>
-                  <b className="text-slate-700 block">{selectedOrderDetails.invoice?.payment_method || 'Transfer BCA'}</b>
-                  <span className="text-slate-500 block">Jatuh Tempo: {selectedOrderDetails.invoice?.due_date}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* --- VISUAL TIMELINE PROGRESS BAR & ESTIMASI SISA WAKTU (User Request) --- */}
-            {(() => {
-              const currentStatus = selectedOrderDetails.production_status || 'antri_produksi';
+            {/* Modal Body */}
+            <div className="p-6 md:p-8 space-y-6 overflow-y-auto">
               
-              const steps = [
-                { id: 'antri_produksi', num: 1, label: 'Antri Produksi', pct: 15, duration: '4-6 Jam', detail: 'Menunggu alokasi antrean pencetakan (FIFO)', activeColor: 'bg-amber-500 text-amber-600' },
-                { id: 'cetak_dtf', num: 2, label: 'Cetak DTF', pct: 35, duration: '3-4 Jam', detail: 'Pencetakan desain ke film PET Transfer', activeColor: 'bg-blue-600 text-blue-600' },
-                { id: 'press_sablon', num: 3, label: 'Press Sablon', pct: 55, duration: '2-3 Jam', detail: 'Pemindahan sablon ke kaos dng thermal press', activeColor: 'bg-purple-600 text-purple-600' },
-                { id: 'quality_control', num: 4, label: 'Quality Control', pct: 75, duration: '1-1.5 Jam', detail: 'Uji ketahanan mutu jaminan NoiseCustom', activeColor: 'bg-sky-600 text-sky-600' },
-                { id: 'packing', num: 5, label: 'Packing', pct: 90, duration: '30 Menit', detail: 'Pemberian tag, pengemasan, & label kurir', activeColor: 'bg-teal-600 text-teal-600' },
-                { id: 'selesai', num: 6, label: 'Selesai', pct: 100, duration: 'Selesai!', detail: 'Pesanan telah selesai & siap diserahkan/dikirim', activeColor: 'bg-emerald-600 text-emerald-600' }
-              ];
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                {/* COLUMN 1: LEFT SIDE (Production Timeline & Specs) -> Col-span-7 */}
+                <div className="lg:col-span-7 space-y-6">
+                  
+                  {/* METRIC PROGRESS CARD (Logic 6, 7) */}
+                  {(() => {
+                    const currentStatus = selectedOrderDetails.production_status || 'antri_produksi';
+                    
+                    const steps = [
+                      { id: 'antri_produksi', num: 1, label: 'Antri Produksi', pct: 15, duration: '4-6 Jam', detail: 'Menunggu alokasi antrean pencetakan (FIFO)', activeColor: 'bg-amber-500 text-amber-600' },
+                      { id: 'cetak_dtf', num: 2, label: 'Cetak DTF', pct: 35, duration: '3-4 Jam', detail: 'Pencetakan desain ke film PET Transfer', activeColor: 'bg-blue-600 text-blue-600' },
+                      { id: 'press_sablon', num: 3, label: 'Press Sablon', pct: 55, duration: '2-3 Jam', detail: 'Pemindahan sablon ke kaos dng thermal press', activeColor: 'bg-purple-600 text-purple-600' },
+                      { id: 'quality_control', num: 4, label: 'Quality Control', pct: 75, duration: '1-1.5 Jam', detail: 'Uji ketahanan mutu jaminan NoiseCustom', activeColor: 'bg-sky-600 text-sky-600' },
+                      { id: 'packing', num: 5, label: 'Packing', pct: 90, duration: '30 Menit', detail: 'Pemberian tag, pengemasan, & label kurir', activeColor: 'bg-teal-600 text-teal-600' },
+                      { id: 'selesai', num: 6, label: 'Selesai', pct: 100, duration: 'Selesai!', detail: 'Pesanan telah selesai & siap diserahkan/dikirim', activeColor: 'bg-emerald-600 text-emerald-600' }
+                    ];
 
-              let displayPct = 0;
-              let currentStepIndex = -1;
-              let currentDuration = 'Selesai!';
-              let stepExplanation = '';
-              let badgeText = 'Proses Normal';
-              let badgeColor = 'bg-blue-50 border-blue-200 text-blue-700';
+                    let displayPct = 0;
+                    let currentStepIndex = -1;
+                    let currentDuration = 'Selesai!';
+                    let stepExplanation = '';
+                    let badgeText = 'Proses Normal';
+                    let badgeColor = 'bg-blue-50 border-blue-200 text-blue-700';
 
-              if (currentStatus === 'revisi_komplain') {
-                displayPct = 60;
-                currentStepIndex = 2.5; 
-                currentDuration = '45 Menit';
-                stepExplanation = 'Order masuk tahap REVISI / PERBAIKAN sablon ulang karena terindikasi gagal lolos mutu QC sebelumnya.';
-                badgeText = 'Revisi Komplain (Prioritas)';
-                badgeColor = 'bg-rose-50 border-rose-100 text-rose-700';
-              } else {
-                const targetStep = steps.find(s => s.id === currentStatus);
-                if (targetStep) {
-                  displayPct = targetStep.pct;
-                  currentStepIndex = steps.indexOf(targetStep);
-                  currentDuration = targetStep.duration;
-                  stepExplanation = targetStep.detail;
-                } else {
-                  displayPct = 5;
-                  currentStepIndex = -1;
-                  currentDuration = 'Menunggu Pembayaran';
-                  stepExplanation = 'Menunggu penyetoran bukti transfer & persetujuan keuangan sebelum dialokasikan ke antrean cetak.';
-                  badgeText = 'Menunggu Verifikasi';
-                  badgeColor = 'bg-amber-50 border-amber-100 text-amber-700';
-                }
-              }
+                    if (currentStatus === 'revisi_komplain') {
+                      displayPct = 60;
+                      currentStepIndex = 2.5; 
+                      currentDuration = '45 Menit';
+                      stepExplanation = 'Order masuk tahap REVISI / PERBAIKAN sablon ulang karena terindikasi gagal lolos mutu QC sebelumnya.';
+                      badgeText = 'Revisi Komplain (Prioritas)';
+                      badgeColor = 'bg-rose-50 border-rose-150 text-rose-700';
+                    } else {
+                      const targetStep = steps.find(s => s.id === currentStatus);
+                      if (targetStep) {
+                        displayPct = targetStep.pct;
+                        currentStepIndex = steps.indexOf(targetStep);
+                        currentDuration = targetStep.duration;
+                        stepExplanation = targetStep.detail;
+                      } else {
+                        displayPct = 5;
+                        currentStepIndex = -1;
+                        currentDuration = 'Menunggu Pembayaran';
+                        stepExplanation = 'Menunggu penyetoran bukti transfer & persetujuan keuangan sebelum dialokasikan ke antrean cetak.';
+                        badgeText = 'Menunggu Verifikasi';
+                        badgeColor = 'bg-amber-50 border-amber-100 text-amber-700';
+                      }
+                    }
 
-              return (
-                <div id="dynamic-production-tracker" className="p-4 rounded-xl border border-slate-200 space-y-4 bg-slate-50/70">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-slate-500 font-extrabold tracking-wider uppercase flex items-center gap-1.5">
-                      <Gauge className="w-4 h-4 text-blue-600" /> TIMELINE & ESTIMASI PRODUKSI SCM
-                    </span>
-                    <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${badgeColor}`}>
-                      {badgeText}
-                    </span>
-                  </div>
+                    return (
+                      <div id="dynamic-production-tracker" className="p-5 rounded-2xl border border-slate-100 space-y-4 bg-[#F8FAFC]/65 shadow-xs">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] text-slate-500 font-extrabold tracking-wider uppercase flex items-center gap-1.5">
+                            <Gauge className="w-4 h-4 text-blue-600" /> TIMELINE & ESTIMASI PRODUKSI SCM
+                          </span>
+                          <span className={`text-[9.5px] font-bold px-2.5 py-0.5 rounded-full border ${badgeColor}`}>
+                            {badgeText}
+                          </span>
+                        </div>
 
-                  {/* Estimated remaining countdown banner component */}
-                  <div className="grid grid-cols-2 gap-3 bg-white p-3 rounded-lg border border-slate-150 shadow-xs">
-                    <div className="space-y-0.5">
-                      <span className="text-[9.5px] text-slate-400 uppercase block font-semibold">Estimasi Sisa Pengerjaan</span>
-                      <div className="flex items-center gap-1 text-slate-800 font-black">
-                        <Clock className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                        <span className="text-xs uppercase font-extrabold">{currentDuration}</span>
-                      </div>
-                    </div>
-                    <div className="text-right space-y-0.5">
-                      <span className="text-[9.5px] text-slate-400 uppercase block font-semibold">Progress Tahap</span>
-                      <div className="text-xs font-black text-blue-600">
-                        {displayPct}% Rampung
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Custom CSS animated shimmer progress tracking line */}
-                  <div className="relative pt-1">
-                    <div id="timeline-rail" className="h-3 w-full bg-slate-200 rounded-full overflow-hidden relative border border-slate-300/40">
-                      
-                      <motion.div
-                        className="h-full rounded-full bg-gradient-to-r from-blue-500 via-sky-500 to-blue-700 relative"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${displayPct}%` }}
-                        transition={{ duration: 0.95, ease: "easeOut" }}
-                      >
-                        {/* Shimmer overlay class dynamically loaded from global CSS */}
-                        <div className="absolute inset-x-0 top-0 bottom-0 w-24 h-full bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.45)_50%,transparent_100%)] animate-shimmer"></div>
-                      </motion.div>
-
-                    </div>
-                  </div>
-
-                  {/* Horizontal visual checkpoint steps list */}
-                  <div className="grid grid-cols-6 gap-0.5 relative pt-1">
-                    {steps.map((st, sIdx) => {
-                      const isCompleted = sIdx < currentStepIndex;
-                      const isActive = sIdx === currentStepIndex;
-
-                      return (
-                        <div key={st.id} className="flex flex-col items-center text-center space-y-1">
-                          <div className="relative">
-                            <div className={`w-5.5 h-5.5 rounded-full flex items-center justify-center text-[9px] font-black border transition-all duration-300 ${isCompleted ? 'bg-blue-600 border-blue-600 text-white shadow-xs' : isActive ? 'bg-blue-50 border-blue-505 text-blue-600 ring-3 ring-blue-500/20 font-black' : 'bg-white border-slate-200 text-slate-400'}`}>
-                              {isCompleted ? '✓' : st.num}
+                        {/* Estimated remaining countdown banner component */}
+                        <div className="grid grid-cols-2 gap-3 bg-white p-4 rounded-xl border border-slate-150 shadow-3xs">
+                          <div className="space-y-0.5">
+                            <span className="text-[9.5px] text-slate-400 uppercase block font-semibold">Estimasi Sisa Pengerjaan</span>
+                            <div className="flex items-center gap-1 text-slate-800 font-black">
+                              <Clock className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                              <span className="text-xs uppercase font-extrabold">{currentDuration}</span>
                             </div>
-                            {isActive && (
-                              <span className="absolute -top-0.5 -right-0.5 flex h-1.5 w-1.5">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-blue-500"></span>
-                              </span>
-                            )}
                           </div>
-                          
-                          <div className="min-w-0">
-                            <span className={`text-[8.5px] font-extrabold block truncate max-w-[65px] ${isActive ? 'text-blue-600 font-black' : isCompleted ? 'text-slate-600' : 'text-slate-400'}`}>
-                              {st.label}
-                            </span>
+                          <div className="text-right space-y-0.5">
+                            <span className="text-[9.5px] text-slate-400 uppercase block font-semibold">Progress Tahap</span>
+                            <div className="text-xs font-black text-blue-600">
+                              {displayPct}% Rampung
+                            </div>
                           </div>
                         </div>
-                      );
-                    })}
+
+                        {/* Custom Animated Progress Bar */}
+                        <div className="relative pt-1">
+                          <div id="timeline-rail" className="h-2.5 w-full bg-slate-200/80 rounded-full overflow-hidden relative border border-slate-300/20">
+                            <motion.div
+                              className="h-full rounded-full bg-gradient-to-r from-blue-500 via-sky-500 to-blue-700 relative"
+                              initial={{ width: 0 }}
+                              animate={{ width: `${displayPct}%` }}
+                              transition={{ duration: 0.95, ease: "easeOut" }}
+                            >
+                              <div className="absolute inset-x-0 top-0 bottom-0 w-24 h-full bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.45)_50%,transparent_100%)] animate-shimmer"></div>
+                            </motion.div>
+                          </div>
+                        </div>
+
+                        {/* Checkpoints Step Marks */}
+                        <div className="grid grid-cols-6 gap-0.5 relative pt-1">
+                          {steps.map((st, sIdx) => {
+                            const isCompleted = sIdx < currentStepIndex;
+                            const isActive = sIdx === currentStepIndex;
+
+                            return (
+                              <div key={st.id} className="flex flex-col items-center text-center space-y-1">
+                                <div className="relative">
+                                  <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-black border transition-all duration-300 ${isCompleted ? 'bg-blue-600 border-blue-600 text-white shadow-xs' : isActive ? 'bg-blue-50 border-blue-500 text-blue-600 ring-3 ring-blue-500/20 font-black' : 'bg-white border-slate-200 text-slate-400'}`}>
+                                    {isCompleted ? '✓' : st.num}
+                                  </div>
+                                  {isActive && (
+                                    <span className="absolute -top-0.5 -right-0.5 flex h-1.5 w-1.5">
+                                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-blue-500"></span>
+                                    </span>
+                                  )}
+                                </div>
+                                
+                                <div className="min-w-0">
+                                  <span className={`text-[8.5px] font-extrabold block truncate max-w-[65px] ${isActive ? 'text-blue-600 font-black' : isCompleted ? 'text-slate-650' : 'text-slate-400'}`}>
+                                    {st.label}
+                                  </span>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        {/* Step Description */}
+                        <div className="p-3.5 rounded-xl bg-white border border-slate-100 text-slate-600 text-[11px] leading-relaxed">
+                          <span className="font-bold text-slate-705 uppercase block mb-1 flex items-center gap-1.5 text-[10.5px]">
+                            <Sparkles className="w-4 h-4 text-blue-500 shrink-0" /> Status Operasional Produksi:
+                          </span>
+                          <p className="font-medium text-slate-550">{stepExplanation}</p>
+                        </div>
+                      </div>
+                    );
+                  })()}
+
+                  {/* Design File and Details */}
+                  <div className="border border-slate-100 p-5 rounded-2xl space-y-4 bg-white shadow-xs">
+                    <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                      <span className="text-[10px] text-blue-600 font-extrabold tracking-wider uppercase block">BERKAS DESAIN & FILE ORDER (DIREKTORI SCM)</span>
+                      <span className="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-[10px] font-black tracking-wider uppercase">
+                        Ukuran: {selectedOrderDetails.designs?.print_size || 'N/A'}
+                      </span>
+                    </div>
+
+                    {selectedOrderDetails.designs?.design_file_url && (
+                      <div className="relative rounded-2xl overflow-hidden border border-slate-100 h-52 bg-slate-50 max-w-md mx-auto group">
+                        <img src={selectedOrderDetails.designs.design_file_url} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Custom Design layout" referrerPolicy="no-referrer" />
+                        <div className="absolute inset-x-0 bottom-0 bg-slate-900/80 backdrop-blur-xs p-3 text-[10.5px] text-white flex justify-between items-center">
+                          <span className="font-medium">File: {selectedOrderDetails.designs.design_file_name}</span>
+                          <a href={selectedOrderDetails.designs.design_file_url} target="_blank" rel="noopener noreferrer" className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-2.5 py-1 rounded-md text-[10px] transition-all">Full-res &rarr;</a>
+                        </div>
+                      </div>
+                    )}
+
+                    <p className="text-xs text-slate-600 italic bg-slate-50 p-3.5 rounded-xl border border-slate-200/50 leading-relaxed font-medium">
+                      <b className="text-slate-800 block not-italic font-extrabold uppercase text-[9.5px] tracking-wider mb-1">Catatan instruksi cetak:</b> 
+                      "{selectedOrderDetails.designs?.notes || 'Tidak ada catatan khusus.'}"
+                    </p>
                   </div>
 
-                  {/* Descriptive message box */}
-                  <div className="p-3 rounded-lg bg-white border border-slate-150 text-slate-600 text-[11px] leading-relaxed">
-                    <span className="font-bold text-slate-700 uppercase block mb-0.5 flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5 text-blue-500 shrink-0" /> Status Operasional Produksi:
-                    </span>
-                    <p className="font-normal text-slate-600">{stepExplanation}</p>
+                  {/* Shirt Items list and price */}
+                  <div className="border border-slate-100 p-5 rounded-2xl bg-white shadow-xs space-y-4">
+                    <span className="text-[10px] text-slate-500 uppercase font-black tracking-wider block border-b border-slate-100 pb-3">DAFTAR KELOMPOK KAOS & SPESIFIKASI</span>
+                    <div className="space-y-2 text-xs text-slate-700">
+                      {selectedOrderDetails.items?.map((item: any) => (
+                        <div key={item.id} className="flex justify-between items-center bg-slate-50 border border-slate-100 p-3 rounded-xl hover:bg-slate-100/50 transition-colors">
+                          <div className="flex flex-col">
+                            <span className="font-bold text-slate-800">{item.jenis_kaos}</span>
+                            <span className="text-slate-400 text-[10px] mt-0.5">{item.warna} &bull; Size {item.size}</span>
+                          </div>
+                          <div className="text-right">
+                            <b className="text-slate-800 text-xs block font-extrabold">Qty: {item.quantity} Pcs</b>
+                            <span className="text-slate-500 text-[10.5px]">Rp {item.subtotal.toLocaleString()}</span>
+                          </div>
+                        </div>
+                      ))}
+                      <div className="flex justify-between items-center text-sm font-black pt-4 text-blue-600 border-t border-dashed border-slate-200">
+                        <span className="uppercase tracking-wider">GRAND TOTAL TAGIHAN:</span>
+                        <span className="text-base font-black bg-blue-50 px-3.5 py-1 rounded-xl">Rp {selectedOrderDetails.total_amount?.toLocaleString()}</span>
+                      </div>
+                    </div>
                   </div>
+
                 </div>
-              );
-            })()}
 
-            {/* Design & Print Specifications */}
-            <div className="border border-slate-200 p-4 rounded-xl space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-[10px] text-blue-600 uppercase font-black block">BERKAS DESAIN & FILE ORDER (DIREKTORI SCM)</span>
-                <span className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[10px] font-bold">
-                  Ukuran: {selectedOrderDetails.designs?.print_size || 'N/A'}
-                </span>
-              </div>
-
-              {selectedOrderDetails.designs?.design_file_url && (
-                <div className="relative rounded-lg overflow-hidden border border-slate-150 h-44 bg-slate-150 max-w-sm mx-auto">
-                  <img src={selectedOrderDetails.designs.design_file_url} className="w-full h-full object-cover" alt="Custom Design layout" />
-                  <div className="absolute inset-x-0 bottom-0 bg-slate-900/70 p-2 text-[10px] text-white flex justify-between">
-                    <span>File: {selectedOrderDetails.designs.design_file_name}</span>
-                    <a href={selectedOrderDetails.designs.design_file_url} target="_blank" rel="noopener noreferrer" className="text-blue-300 font-bold hover:underline">Full-res &rarr;</a>
+                {/* COLUMN 2: RIGHT SIDE (Actions, Billing & Controls) -> Col-span-5 */}
+                <div className="lg:col-span-5 space-y-6">
+                  
+                  {/* Customer Display Info */}
+                  <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200/80 space-y-4">
+                    <span className="text-[10px] text-slate-400 uppercase font-black tracking-widest block border-b border-slate-200/60 pb-3">PELANGGAN & OPERASI</span>
+                    
+                    <div className="space-y-3.5 text-xs">
+                      <div>
+                        <span className="text-slate-400 block mb-0.5 font-semibold text-[10px] uppercase">Rincian Customer:</span>
+                        <b className="text-slate-850 text-[13px] block">{selectedOrderDetails.customer_name}</b>
+                        <a 
+                          href={`https://wa.me/${selectedOrderDetails.customer_phone.replace(/^0/, '62')}`} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-emerald-700 font-bold flex items-center gap-1.5 mt-1 hover:underline text-[11px]"
+                        >
+                          <PhoneCall className="w-3.5 h-3.5" /> {selectedOrderDetails.customer_phone} [Chat WA]
+                        </a>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-2 pt-1">
+                        <div>
+                          <span className="text-slate-400 block mb-0.5 text-[9px] uppercase font-semibold">Metode Bayar</span>
+                          <b className="text-slate-700 text-[11.5px] block">{selectedOrderDetails.invoice?.payment_method || 'Transfer BCA'}</b>
+                        </div>
+                        <div>
+                          <span className="text-slate-400 block mb-0.5 text-[9px] uppercase font-semibold">Tenggat Waktu</span>
+                          <b className="text-slate-700 text-[11.5px] block">{selectedOrderDetails.invoice?.due_date || '-'}</b>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              )}
 
-              <p className="text-xs text-slate-600 italic bg-slate-50 p-2.5 rounded">
-                <b>Catatan layout desain:</b> "{selectedOrderDetails.designs?.notes || 'Tidak ada catatan khusus.'}"
-              </p>
-            </div>
+                  {/* Cash Proof Review Section */}
+                  {selectedOrderDetails.payment && (
+                    <div className="p-5 rounded-2xl border border-amber-200 bg-amber-50/25 space-y-4">
+                      <span className="text-[10px] text-amber-700 uppercase font-black tracking-widest block border-b border-amber-200/40 pb-3">TINJAUAN BUKTI TRANSFER (KEUANGAN)</span>
+                      
+                      <div className="text-xs space-y-2">
+                        <div className="flex justify-between">
+                          <span className="text-amber-700 font-medium font-semibold">Nominal Setoran:</span>
+                          <b className="text-slate-900 font-black">Rp {selectedOrderDetails.payment?.amount_paid?.toLocaleString()}</b>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-amber-700 font-medium font-semibold">Status Verifikasi:</span>
+                          <span className="uppercase font-extrabold text-blue-600 bg-blue-50/75 border border-blue-100 px-2 py-0.5 rounded-md text-[9.5px]">{selectedOrderDetails.payment?.status_verifikasi}</span>
+                        </div>
+                        {selectedOrderDetails.payment?.notes && (
+                          <p className="italic text-slate-600 p-2.5 bg-white border border-slate-150 rounded-xl leading-relaxed text-[10.5px]">
+                            Catatan Pengirim: "{selectedOrderDetails.payment.notes}"
+                          </p>
+                        )}
+                      </div>
 
-            {/* Tagged Items breakdown and Total price */}
-            <div className="border border-slate-200 p-4 rounded-xl">
-              <span className="text-[10px] text-slate-400 uppercase font-bold block mb-2">DAFTAR PILIHAN KAOS CUSTOM</span>
-              <div className="space-y-1.5 text-xs text-slate-700">
-                {selectedOrderDetails.items?.map((item: any) => (
-                  <div key={item.id} className="flex justify-between items-center bg-slate-50 p-2 rounded">
-                    <span>{item.jenis_kaos} - {item.warna} (Size {item.size})</span>
-                    <b className="text-slate-900">Qty: {item.quantity} Pcs &bull; Rp {item.subtotal.toLocaleString()}</b>
-                  </div>
-                ))}
-                <div className="flex justify-between text-sm font-black pt-2 text-blue-600 border-t border-dashed border-slate-200">
-                  <span>GRAND TOTAL TAGIHAN:</span>
-                  <span>Rp {selectedOrderDetails.total_amount?.toLocaleString()}</span>
-                </div>
-              </div>
-            </div>
+                      {selectedOrderDetails.payment?.payment_proof_url && (
+                        <div className="relative rounded-2xl overflow-hidden border border-amber-200 h-44 bg-slate-200 group">
+                          <img src={selectedOrderDetails.payment.payment_proof_url} className="w-full h-full object-cover group-hover:scale-105 transition-all" alt="Proof of payment transfer slip" referrerPolicy="no-referrer" />
+                          <a 
+                            href={selectedOrderDetails.payment.payment_proof_url} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="absolute bottom-2.5 right-2.5 bg-slate-900/80 backdrop-blur-xs text-white px-3 py-1.5 rounded-lg text-[9px] font-bold hover:bg-slate-900"
+                          >
+                            Tampilkan Struk Asli
+                          </a>
+                        </div>
+                      )}
 
-            {/* Payment Verification Card (Strict Admin access logic 2 & 3 & 4) */}
-            {selectedOrderDetails.payment && (
-              <div className="p-4 rounded-xl border border-amber-200 bg-amber-50/40 space-y-3">
-                <span className="text-[10px] text-amber-700 uppercase font-black block">TINJAUAN BUKTI TRANSFER (ADMIN/OWNER ONLY)</span>
-                
-                <div className="text-xs space-y-1">
-                  <div>Pembayaran Yang Disetor: <b>Rp {selectedOrderDetails.payment?.amount_paid?.toLocaleString()}</b></div>
-                  <div>Status Verifikasi SCM: <span className="uppercase font-bold text-blue-600">{selectedOrderDetails.payment?.status_verifikasi}</span></div>
-                  {selectedOrderDetails.payment?.notes && <p className="italic text-slate-600 p-1.5 bg-white border border-slate-150 rounded">Catatan Penyetor: "{selectedOrderDetails.payment.notes}"</p>}
-                </div>
+                      {/* Approval Buttons */}
+                      {selectedOrderDetails.payment?.status_verifikasi === 'menunggu_verifikasi' ? (
+                        <div className="pt-2">
+                          {activeRole === 'produksi' ? (
+                            <p className="text-[10px] text-amber-600 font-bold bg-amber-50 p-2.5 rounded-xl border border-amber-200/40">
+                              ⚠️ Anda log-in sebagai Produksi. Persetujuan verifikasi keuangan hanya diizinkan bagi Admin SCM atau Owner.
+                            </p>
+                          ) : (
+                            <div className="flex flex-col gap-2">
+                              <button
+                                onClick={() => handleVerifyPayment(selectedOrderDetails.payment.id, 'disetujui', 'Bukti bayar lunas valid. Sistem SCM setujui.')}
+                                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black py-2.5 rounded-xl shadow-xs text-center cursor-pointer transition-all uppercase tracking-wider"
+                              >
+                                Setujui (Lunas + Potong Kaos)
+                              </button>
+                              <button
+                                onClick={() => {
+                                  const reason = prompt("Masukkan alasan penolakan pembayaran:");
+                                  if (reason !== null) {
+                                    handleVerifyPayment(selectedOrderDetails.payment.id, 'ditolak', reason || "Bukti transfer pudar atau tidak valid.");
+                                  }
+                                }}
+                                className="w-full bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold py-2 px-4 rounded-xl cursor-pointer transition-all text-center uppercase tracking-wider"
+                              >
+                                Tolak Bukti Transfer
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="p-3 bg-white rounded-xl border border-slate-100 text-[11px] text-slate-500 font-medium">
+                          Status Pembayaran: disetujui oleh <b className="text-slate-700">{selectedOrderDetails.payment?.verified_by || 'Sistem'}</b>.
+                        </div>
+                      )}
+                    </div>
+                  )}
 
-                {selectedOrderDetails.payment?.payment_proof_url && (
-                  <div className="relative rounded-lg overflow-hidden border max-w-xs h-36 bg-slate-200">
-                    <img src={selectedOrderDetails.payment.payment_proof_url} className="w-full h-full object-cover" alt="Proof of payment transfer slip" />
-                    <a href={selectedOrderDetails.payment.payment_proof_url} target="_blank" rel="noopener noreferrer" className="absolute bottom-1 right-1 px-1.5 bg-slate-900/80 text-white rounded text-[8px]">
-                      Struk Ukuran Asli
-                    </a>
-                  </div>
-                )}
+                  {/* Production Status Step Updates */}
+                  <div className="p-5 rounded-2xl border border-slate-100 bg-white shadow-xs space-y-4">
+                    <span className="text-[10px] text-slate-500 uppercase font-black block border-b border-slate-100 pb-3">KONTROL UPDATE PROGRESS SCM</span>
+                    
+                    <div className="grid grid-cols-2 gap-2">
+                      {[
+                        { value: 'antri_produksi', label: '1. Antri Produksi' },
+                        { value: 'cetak_dtf', label: '2. Cetak DTF' },
+                        { value: 'press_sablon', label: '3. Press Sablon' },
+                        { value: 'quality_control', label: '4. Quality Control' },
+                        { value: 'packing', label: '5. Packing' },
+                        { value: 'selesai', label: '6. Selesai' }
+                      ].map(item => (
+                        <button
+                          key={item.value}
+                          onClick={() => {
+                            const note = prompt(`Tambahkan catatan progress untuk status ${item.label.toUpperCase()}:`);
+                            if (note !== null) {
+                              handleUpdateProductionStatus(selectedOrderDetails.id, item.value, note);
+                            }
+                          }}
+                          className={`py-2 px-3 rounded-xl font-bold text-left text-[11px] transition-all border ${
+                            selectedOrderDetails.production_status === item.value
+                              ? 'bg-blue-600 border-blue-600 text-white shadow-3xs scale-102 font-black'
+                              : 'bg-slate-50 border-slate-100 text-slate-700 hover:bg-slate-100'
+                          }`}
+                        >
+                          {item.label} {selectedOrderDetails.production_status === item.value ? '✓' : ''}
+                        </button>
+                      ))}
+                    </div>
 
-                {/* Approve/Reject CTA only if waiting verification (Logic 3 & 4) */}
-                {selectedOrderDetails.payment?.status_verifikasi === 'menunggu_verifikasi' ? (
-                  <div>
-                    {activeRole === 'produksi' ? (
-                      <p className="text-[10px] text-slate-400 italic">
-                        *Anda log-in sebagai PROD. Verifikasi keuangan hanya dapat dilakukan oleh Admin SCM atau Owner.
-                      </p>
-                    ) : (
+                    {/* Special QC check trigger (Action logic 8) */}
+                    <div className="border-t border-slate-100 pt-4 space-y-3">
+                      <span className="text-[10px] text-blue-600 uppercase font-black block">PENGUKURAN MUTU & REVISI (QUALITY CONTROL CHECK)</span>
                       <div className="flex gap-2">
                         <button
-                          onClick={() => handleVerifyPayment(selectedOrderDetails.payment.id, 'disetujui', 'Bukti bayar lunas valid. Sistem SCM setujui.')}
-                          className="flex-1 bg-green-600 hover:bg-green-700 text-white text-xs font-bold py-2 rounded shadow text-center"
+                          onClick={() => {
+                            handleQCCheck(selectedOrderDetails.id, 'lolos', 'Mutu lolos verifikasi standar NoiseCustom!');
+                          }}
+                          className="flex-1 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold py-2 rounded-xl text-center cursor-pointer transition-all shadow-3xs"
                         >
-                          SETUJUI (DP / Lunas + Auto Potong Kaos)
+                          Lolos QC (Lanjut Packing)
                         </button>
                         <button
                           onClick={() => {
-                            const reason = prompt("Masukkan alasan penolakan pembayaran:");
-                            if (reason !== null) {
-                              handleVerifyPayment(selectedOrderDetails.payment.id, 'ditolak', reason || "Bukti transfer pudar atau tidak valid.");
+                            const notes = prompt("Tuliskan catatan detail revisi kerusakan:");
+                            if (notes !== null) {
+                              handleQCCheck(selectedOrderDetails.id, 'tidak_lolos', notes || "Gagal QC: Sablon buram.");
                             }
                           }}
-                          className="bg-red-650 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-4 rounded"
+                          className="flex-1 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold py-2 rounded-xl text-center cursor-pointer transition-all shadow-3xs"
                         >
-                          TOLAK
+                          Tolak QC (Revisi Ulang)
                         </button>
                       </div>
-                    )}
+                    </div>
                   </div>
-                ) : (
-                  <div className="p-2 bg-white rounded border border-slate-200 text-[11px] text-slate-500">
-                    Selesai diproses oleh <b>{selectedOrderDetails.payment?.verified_by || 'Sistem'}</b>.
-                  </div>
-                )}
-              </div>
-            )}
 
-            {/* Production Status Step Updates (Action logic 6) */}
-            <div className="p-4 rounded-xl border border-slate-200 space-y-3.5">
-              <span className="text-[10px] text-slate-400 uppercase font-black block">KONTROL UPDATE PROGRESS PRODUKSI</span>
-              
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  { value: 'antri_produksi', label: '1. Antri Produksi' },
-                  { value: 'cetak_dtf', label: '2. Cetak DTF' },
-                  { value: 'press_sablon', label: '3. Press Sablon' },
-                  { value: 'quality_control', label: '4. Quality Control' },
-                  { value: 'packing', label: '5. Packing' },
-                  { value: 'selesai', label: '6. Selesai' }
-                ].map(item => (
-                  <button
-                    key={item.value}
-                    onClick={() => {
-                      const note = prompt(`Tambahkan catatan progress untuk status ${item.label.toUpperCase()}:`);
-                      if (note !== null) {
-                        handleUpdateProductionStatus(selectedOrderDetails.id, item.value, note);
-                      }
-                    }}
-                    className={`py-1.5 px-2.5 rounded font-bold text-left text-[11px] transition-all border ${
-                      selectedOrderDetails.production_status === item.value
-                        ? 'bg-blue-600 border-blue-600 text-white shadow'
-                        : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
-                    }`}
-                  >
-                    {item.label} {selectedOrderDetails.production_status === item.value ? '✓' : ''}
-                  </button>
-                ))}
-              </div>
-
-              {/* Special QC check trigger (Action logic 8) */}
-              <div className="border-t border-slate-100 pt-3.5 space-y-2">
-                <span className="text-[10px] text-blue-600 uppercase font-black block">PENGUKURAN MUTU & REVISI (QUALITY CONTROL CHECK)</span>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => {
-                      handleQCCheck(selectedOrderDetails.id, 'lolos', 'Mutu lolos verifikasi standar NoiseCustom!');
-                    }}
-                    className="flex-1 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold py-1.5 rounded-md text-center"
-                  >
-                    Lolos QC (Majukan ke Packing)
-                  </button>
-                  <button
-                    onClick={() => {
-                      const notes = prompt("Tuliskan catatan detail revisi kerusakan:");
-                      if (notes !== null) {
-                        handleQCCheck(selectedOrderDetails.id, 'tidak_lolos', notes || "Gagal QC: Sablon buram.");
-                      }
-                    }}
-                    className="flex-1 bg-red-650 bg-red-650 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-1.5 rounded-md text-center"
-                  >
-                    Tolak QC (Kembali Revisi)
-                  </button>
                 </div>
+
               </div>
+
             </div>
 
           </div>
